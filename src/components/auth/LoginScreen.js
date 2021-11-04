@@ -1,23 +1,48 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { useDispatch } from 'react-redux';
+
+import { Link } from 'react-router-dom';
+import { useForm } from '../../hooks/useForm';
+
+//actions
+import { startLoginEmailPassword } from '../../actions/auth';
 
 export const LoginScreen = () => {
+
+    const dispatch = useDispatch();
+
+    const [formState, haleInputChange] = useForm({
+        email : 'dsoftwaredeniz@gmail.com',
+        password : '12345'
+    })
+
+    const {email, password } = formState;
+
+    const handleLogin =(e)=>{
+        e.preventDefault();
+        // console.log(email, password);
+        dispatch(startLoginEmailPassword(email,password)); //en lugar de llamar al login directamente. llamo al dispatch mejor
+    } 
     return (
         <>
             <h3 className="auth__title">Login</h3>
-            <form>
+            <form onSubmit = { handleLogin }> 
                 <input
                     type="text"
                     placeholder="Email"
                     name="email"
                     className="auth__input"
                     autoComplete='off'
+                    value = { email }
+                    onChange = { haleInputChange }
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     name="password"
                     className="auth__input"
+                    value = { password }
+                    onChange = { haleInputChange }
                 />
                 <button
                     type="submit"
